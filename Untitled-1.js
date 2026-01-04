@@ -124,6 +124,16 @@ menuToggle.addEventListener('click', () => {
   menuToggle.classList.toggle('active');
   mobileMenu.classList.toggle('active');
   body.classList.toggle('menu-open');
+  
+  // Add ripple effect on menu toggle
+  const rect = menuToggle.getBoundingClientRect();
+  const ripple = document.createElement('div');
+  ripple.className = 'menu-ripple';
+  ripple.style.left = (rect.width / 2) + 'px';
+  ripple.style.top = (rect.height / 2) + 'px';
+  menuToggle.appendChild(ripple);
+  
+  setTimeout(() => ripple.remove(), 600);
 });
 
 // Close menu when clicking a link
@@ -132,6 +142,27 @@ mobileLinks.forEach(link => {
     menuToggle.classList.remove('active');
     mobileMenu.classList.remove('active');
     body.classList.remove('menu-open');
+  });
+});
+
+// Add touch ripple effect to mobile links
+mobileLinks.forEach(link => {
+  link.addEventListener('touchstart', function(e) {
+    const ripple = document.createElement('span');
+    ripple.className = 'touch-ripple';
+    
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.touches[0].clientX - rect.left - size / 2;
+    const y = e.touches[0].clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    
+    this.appendChild(ripple);
+    
+    setTimeout(() => ripple.remove(), 600);
   });
 });
 
